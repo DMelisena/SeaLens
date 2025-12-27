@@ -10,6 +10,8 @@ on:
     branches:
       - main
       - development
+env:
+  TUIST_TOKEN: ${{ secrets.TUIST_TOKEN }}
 
 permissions:
   id-token: write
