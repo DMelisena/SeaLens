@@ -1,29 +1,21 @@
-name: Tuist CI
-
+name: Build Application
 on:
-  push:
-    branches:
-      - main
-      - development
-      - ci
   pull_request:
     branches:
       - main
-      - development
+  push:
+    branches:
+      - main
+
 env:
   TUIST_TOKEN: ${{ secrets.TUIST_TOKEN }}
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   build:
-    runs-on: macos-26
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
       - run: tuist setup cache
-      - run: echo ${{ env.TUIST_TOKEN }}
       - run: tuist install
       - run: tuist generate
