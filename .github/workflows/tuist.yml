@@ -11,37 +11,15 @@ on:
       - main
       - development
 
-# env:
-#   CI: 1
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build:
     runs-on: macos-26
-    # env:
-    #   CI: 1
     steps:
-      # 1. Check out your repository's code
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # 2. Set the Xcode version available on macOS 26 runners.
-      - name: Select Xcode 26.0.1
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '26.0.1'
-
-      # 3. Install Mise and Tuist
-      - name: Setup Mise and Tuist
-        uses: jdx/mise-action@v2
-
-      # 4. Run Tuist install
-      - name: Install dependencies
-        run: tuist install
-        env:
-          TUIST_CONFIG_TOKEN: ${{ secrets.TUIST_TOKEN}}
-
-      # 5. Run Tuist build
-      - name: Build
-        run: tuist build
-        env:
-          TUIST_CONFIG_TOKEN: ${{ secrets.TUIST_TOKEN}}
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - run: tuist auth login
+      - run: tuist setup cache
